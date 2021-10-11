@@ -2,8 +2,12 @@ AWSTemplateFormatVersion: 2010-09-09
 Description: >-
   This AWS Cloudformation template creates:
    - an example S3 bucket using minimal CFN template
+Parameters:
+  BucketName:
+    Description: 'Desired example bucket name'
+    Type: 'String'
 Resources:
   MinBucket:
     Type: 'AWS::S3::Bucket'
     Properties:
-      BucketName: 'jk-test-minimal-bucket'
+      BucketName: !Ref BucketName
