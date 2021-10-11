@@ -3,15 +3,11 @@ Description: >-
   This AWS Cloudformation template creates:
    - IAM User
    - IAM Managed Policy
-Parameters:
-  UserName:
-    Description: 'Name of IAM user'
-    Type: 'String'
 Resources:
   TestUser:
     Type: 'AWS::IAM::User'
     Properties:
-      UserName: !Ref UserName
+      UserName: '{{resolve:ssm:/jakub.kwiatkowski.labs/username}}'
   TestPolicy:
     Type: 'AWS::IAM::ManagedPolicy'
     Properties:
