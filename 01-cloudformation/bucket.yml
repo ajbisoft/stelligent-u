@@ -10,4 +10,4 @@ Resources:
   MinBucket:
     Type: 'AWS::S3::Bucket'
     Properties:
-      BucketName: !Ref BucketName
+      BucketName: !Sub '${AWS::AccountId}-${BucketName}'
