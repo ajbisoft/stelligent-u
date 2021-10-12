@@ -1,11 +1,5 @@
-import json
 import boto3
-
-
-def get_regions(config_file):
-    ''' Loads regions from config '''
-    
-    return json.load(open(config_file))
+from scripted_bucket_common import get_regions
 
 
 def create_update_stack(region, stack_name, template):
