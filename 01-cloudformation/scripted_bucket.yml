@@ -1,0 +1,14 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: >-
+  This AWS Cloudformation template creates:
+   - an example S3 bucket using scripted approach
+Parameters:
+  BucketName:
+    Description: 'Desired example bucket name'
+    Type: 'String'
+    Default: 'jk-friendly-name'
+Resources:
+  ScriptedBucket:
+    Type: 'AWS::S3::Bucket'
+    Properties:
+      BucketName: !Sub '${AWS::Region}-${AWS::AccountId}-${BucketName}'

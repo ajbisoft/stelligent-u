@@ -1,0 +1,27 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: >-
+  This AWS Cloudformation template creates:
+   - an example S3 bucket using minimal CFN template
+Parameters:
+  BucketName:
+    Description: 'Desired example bucket name'
+    Type: 'String'
+  PreferredRegion:
+    Description: 'Preferred Region'
+    Type: 'String'
+Conditions:
+  IsPreferredRegion: !Equals 
+    - !Ref AWS::Region
+    - !Ref PreferredRegion
+  IsNotPreferredRegion: !Not [ !Condition IsPreferredRegion ]
+Resources:
+  MinBucketAcc:
+    Type: 'AWS::S3::Bucket'
+    Condition: IsPreferredRegion
+    Properties:
+      BucketName: !Sub '${AWS::AccountId}-${BucketName}'
+  MinBucketReg:
+    Type: 'AWS::S3::Bucket'
+    Condition: IsNotPreferredRegion
+    Properties:
+      BucketName: !Sub '${AWS::Region}-${BucketName}'

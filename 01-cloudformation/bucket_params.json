@@ -1,0 +1,10 @@
+[
+        {
+            "ParameterKey": "BucketName",
+            "ParameterValue": "jk-test-minimal-bucket-1"
+        },
+        {
+            "ParameterKey": "PreferredRegion",
+            "ParameterValue": "us-east-1"
+        }
+]

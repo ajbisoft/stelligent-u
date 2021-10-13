@@ -1,0 +1,16 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: >-
+  This AWS Cloudformation template creates:
+   - IAM User
+   - IAM Managed Policy
+Parameters:
+  UserName:
+    Description: 'Name of IAM user'
+    Type: 'String'
+Resources:
+  TestUser2:
+    Type: 'AWS::IAM::User'
+    Properties:
+      UserName: !Ref UserName
+      ManagedPolicyArns: 
+        - !ImportValue "jk-test-01-cloudformation-TestPolicyArn"

@@ -1,0 +1,29 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: >-
+  This AWS Cloudformation template creates:
+   - IAM User
+   - IAM Managed Policy
+Resources:
+  TestUser:
+    Type: 'AWS::IAM::User'
+    Properties:
+      UserName: '{{resolve:ssm:/jakub.kwiatkowski.labs/username}}'
+  TestPolicy:
+    Type: 'AWS::IAM::ManagedPolicy'
+    Properties:
+      Users:
+        - !Ref TestUser
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Action:
+              - 's3:ListBucket'
+              - 's3:GetObject'
+            Resource: 'arn:aws:s3:::*'
+Outputs:
+  TestPolicyArn:
+    Description: "Test Policy's ARN"
+    Value: !Ref TestPolicy
+    Export:
+      Name: !Sub "${AWS::StackName}-TestPolicyArn"
