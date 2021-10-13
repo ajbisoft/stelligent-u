@@ -1,0 +1,50 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: >-
+  This AWS Cloudformation template creates:
+   - an example S3 bucket with bucket PublicRead policy
+   - IAM policy to grant maintainer access to bucket
+Resources:
+  TestBucket:
+    Type: 'AWS::S3::Bucket'
+    Properties:
+      BucketName: !Sub 'test-bucket-jk-${AWS::AccountId}'
+      AccessControl: 'PublicRead'
+  TestBucketMaintainerPolicy:
+    Type: 'AWS::IAM::Policy'
+    Properties:
+      PolicyName: 'S3MaintainerPolicyTest'
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Action:
+              - 's3:*'
+            Resource: 'arn:aws:s3:::test-bucket-jk*'
+      Users: 
+        - 'jakub.kwiatkowski.labs'
+  TestBucketPolicy:
+    Type: 'AWS::S3::BucketPolicy'
+    Properties: 
+      Bucket: !Ref TestBucket
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal: '*'
+            Action:
+              - 's3:GetObject'
+              - 's3:GetObjectVersion'
+              - 's3:ListBucket'
+            Resource: 
+              - !Sub 'arn:aws:s3:::test-bucket-jk-${AWS::AccountId}'
+              - !Sub 'arn:aws:s3:::test-bucket-jk-${AWS::AccountId}/*'
+          - Effect: Deny
+            Principal: '*'
+            Action:
+              - 's3:*'
+            Resource: 
+              - !Sub 'arn:aws:s3:::test-bucket-jk-${AWS::AccountId}/private.txt'
+            Condition:
+              StringNotLike:
+                aws:PrincipalArn:
+                  - "arn:aws:iam::${AWS::AccountId}:user/*"
